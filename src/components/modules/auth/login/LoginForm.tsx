@@ -18,12 +18,13 @@ import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
-
+  const router = useRouter();
   const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
 
   const {
@@ -35,6 +36,7 @@ export default function LoginForm() {
       const res = await reCaptchaTokenVerification(value!);
       if (res?.success) {
         setReCaptchaStatus(true);
+        router.push('/');
       }
     } catch (err: any) {
       console.error(err);
